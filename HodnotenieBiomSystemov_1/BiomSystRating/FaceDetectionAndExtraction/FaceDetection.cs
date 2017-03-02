@@ -27,6 +27,7 @@ namespace FaceDetectionAndExtraction
         {
             Image<Gray, byte> grayFrame = imageFrame.Convert<Gray, byte>();
 
+
             var faces = classifier.DetectMultiScale(grayFrame, 1.1, 0, Size.Empty, Size.Empty);// new Size(20, 20), new Size(imageFrame.Width, imageFrame.Height));
 
             if (faces.Length <= 0) return;
