@@ -18,7 +18,7 @@ namespace BiomSystRating.Classes
         /// <returns>Stlpcovy vektor reprezentujuci 2D obraz pre potreby (aj) PCA</returns>
         public static Matrix<double> GetImageVector(Image<Gray, byte> image, bool normalize = false)
         {
-            NormalizeImage(image);
+            //NormalizeImage(image);
             var w = image.Width;
             var h = image.Height;
             var imageVector = new Matrix<double>(w * h, 1);
@@ -47,13 +47,48 @@ namespace BiomSystRating.Classes
         /// <returns></returns>
         public static Image<Gray, byte> GetImageFromVector(Matrix<double> imageVector, int originalImageWidth, int originalImageHeight)
         {
+            var imgVect = RescaleVector(imageVector);
             var image = new Image<Gray, byte>(originalImageWidth, originalImageHeight);
             for (var row = 0; row < originalImageHeight; row++)
             {
                 for (var col = 0; col < originalImageWidth; col++)
                 {
                     var index = originalImageWidth * row + col;
-                    image.Data[row, col, 0] = (byte) (imageVector[index, 0] * 255);
+                    image.Data[row, col, 0] = (byte)(imgVect[index, 0]);
+                    //image.Data[row, col, 0] = (byte)(imgVect[0, index]);
+                }
+            }
+
+            return image;
+        }
+
+        public static Image<Gray, byte> GetImageFromVector2(Matrix<double> imageVector, int originalImageWidth, int originalImageHeight)
+        {
+            var imgVect = RescaleVector(imageVector);
+            var image = new Image<Gray, byte>(originalImageWidth, originalImageHeight);
+            for (var row = 0; row < originalImageHeight; row++)
+            {
+                for (var col = 0; col < originalImageWidth; col++)
+                {
+                    var index = originalImageWidth * row + col;
+                    //image.Data[row, col, 0] = (byte)(imgVect[index, 0]);
+                    image.Data[row, col, 0] = (byte)(imgVect[0, index]);
+                }
+            }
+
+            return image;
+        }
+
+        public static Image<Gray, byte> GetInvertedImage(Matrix<double> imageVector, int originalImageWidth, int originalImageHeight)
+        {
+            //RescaleVector(imageVector);
+            var image = new Image<Gray, byte>(originalImageWidth, originalImageHeight);
+            for (var row = 0; row < originalImageHeight; row++)
+            {
+                for (var col = 0; col < originalImageWidth; col++)
+                {
+                    var index = originalImageWidth * row + col;
+                    image.Data[row, col, 0] = (byte)(255 - imageVector[index, 0]);
                 }
             }
 
@@ -75,6 +110,26 @@ namespace BiomSystRating.Classes
                         (byte)(255 * (image.Data[row, col, 0] - minI) / (maxI - minI));
                 }
             }
+        }
+
+        /// <summary>
+        /// Metoda preberie vektor typu M x 1 [nemusi byt] a preskaluje jeho hodnoty na interval [0, 255]
+        /// </summary>
+        /// <param name="vector">Vektor na preskalovanie</param>
+        private static Matrix<double> RescaleVector(Matrix<double> vector)
+        {
+            var result = new Matrix<double>(vector.Height, vector.Width);
+            var oldMin = FindMinimumIntensity(vector);
+            var oldMax = FindMaximumIntensity(vector);
+            var len = Math.Abs(oldMax - oldMin);
+
+            for (var i = 0; i < vector.Height; i++)
+                for (var j = 0; j < vector.Width; j++)
+                    result[i, j] = (255 * (vector[i, j] - oldMin)) / len;
+
+            //oldMin = FindMinimumIntensity(vector);
+            //oldMax = FindMaximumIntensity(vector);
+            return result;
         }
 
         private static byte FindMinimumIntensity(Image<Gray, byte> image)
@@ -107,6 +162,48 @@ namespace BiomSystRating.Classes
             }
 
             return (byte)maximum;
+        }
+
+        /// <summary>
+        /// Ocakava vektor typu M x 1
+        /// </summary>
+        /// <param name="vector"></param>
+        /// <returns></returns>
+        private static double FindMinimumIntensity(Matrix<double> vector)
+        {
+            var minimum = double.MaxValue;
+            for (int i = 0; i < vector.Height; i++)
+            {
+                for (int j = 0; j < vector.Width; j++)
+                {
+                    var intensity = vector[i, j];
+                    if (intensity <= minimum)
+                        minimum = intensity;
+                }
+            }
+
+            return minimum;
+        }
+
+        /// <summary>
+        /// Ocakava vektor typu M x 1
+        /// </summary>
+        /// <param name="vector"></param>
+        /// <returns></returns>
+        private static double FindMaximumIntensity(Matrix<double> vector)
+        {
+            var maximum = double.MinValue;
+            for (int i = 0; i < vector.Height; i++)
+            {
+                for (int j = 0; j < vector.Width; j++)
+                {
+                    var intensity = vector[i, j];
+                    if (intensity >= maximum)
+                        maximum = intensity;
+                }
+            }
+
+            return maximum;
         }
 
         /// <summary>

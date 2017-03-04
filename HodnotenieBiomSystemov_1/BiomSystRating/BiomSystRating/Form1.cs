@@ -22,13 +22,14 @@ namespace BiomSystRating
     {
         private PCAProjection pca;
         private Image<Gray, byte> imageFrame;
+        private string[] content;
         public Form1()
         {
             InitializeComponent();
 
             var directory = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\..\Faces"));
-            var content = Directory.GetFiles(directory);
-            pca = new PCAProjection(content);
+            content = Directory.GetFiles(directory);
+            //pca = new PCAProjection(content, emguImageBox);
 
 
             //var form = new FaceDetectionForm();
@@ -52,8 +53,9 @@ namespace BiomSystRating
 
         private void button2_Click(object sender, EventArgs e)
         {
-            VectorManilulation.NormalizeImage(imageFrame);
-            emguImageBox.Image = imageFrame;
+            pca = new PCAProjection(content, emguImageBox);
+            //VectorManilulation.NormalizeImage(imageFrame);
+            //emguImageBox.Image = imageFrame;
         }
     }
 }
