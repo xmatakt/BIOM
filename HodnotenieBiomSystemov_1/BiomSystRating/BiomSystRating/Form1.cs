@@ -16,6 +16,7 @@ using Emgu.CV;
 using Emgu.CV.Structure;
 using FaceDetectionAndExtraction;
 using FaceDetectionAndExtraction.Forms;
+using ZedGraph;
 
 namespace BiomSystRating
 {
@@ -51,7 +52,6 @@ namespace BiomSystRating
             {
                 var dirName = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\..\Faces\" + names[0]));    
             }
-
             //var form = new FaceDetectionForm();
             //form.Show();
 
