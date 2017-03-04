@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using System.Text.RegularExpressions;
 using BiomSystRating.Classes;
 using Emgu.CV;
 using Emgu.CV.Structure;
@@ -28,9 +29,28 @@ namespace BiomSystRating
             InitializeComponent();
 
             var directory = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\..\Faces"));
+
             content = Directory.GetFiles(directory);
+            var names = new List<string>();
+
+            foreach (var path in content)
+            {
+                var personName = Regex.Replace(new FileInfo(path).Name.Replace(".png", ""), @"[0-9]", "");
+                var dirName = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\..\Faces\" + personName));
+                
+                if (!Directory.Exists(dirName))
+                    Directory.CreateDirectory(dirName);
+
+                File.Copy(path, dirName +"\\"+ new FileInfo(path).Name);
+                if(!names.Contains(personName))
+                    names.Add(personName);
+            }
             //pca = new PCAProjection(content, emguImageBox);
 
+            foreach (var path in content)
+            {
+                var dirName = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\..\Faces\" + names[0]));    
+            }
 
             //var form = new FaceDetectionForm();
             //form.Show();
