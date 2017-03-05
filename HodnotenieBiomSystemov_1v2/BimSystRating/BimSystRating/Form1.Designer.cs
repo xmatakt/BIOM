@@ -234,8 +234,9 @@
             this.Controls.Add(this.rocGraphButton);
             this.Controls.Add(this.fmrFnmrgraphsButton);
             this.Controls.Add(this.createDataSetsButton);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Biometric system rating";
             ((System.ComponentModel.ISupportInitialize)(this.minThresholdNumUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxThresholdNumUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.threshStepNumUpDown)).EndInit();

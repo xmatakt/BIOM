@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using Emgu.CV;
 using Emgu.CV.Structure;
@@ -110,13 +111,47 @@ namespace BimSystRating.Classes
             return result;
         }
 
+        /// <summary>
+        /// Vygenerovanie ROC krivky - vyber rozdielnych x hodnot, zoradenie vzostupne
+        /// odstranenie y_i, kde y_i-1 > y_i
+        /// </summary>
+        /// <returns></returns>
         public PointPairList GenerateROCGraph()
         {
-
+            var oldX = 0d;
+            var oldY = 0d;
             var result = new PointPairList();
 
+            //for (var i = 0; i < thresholds.Count; i++)
+            //{
+            //    if (i > 0)
+            //    {
+            //        if (!result.Select(x => x.X).Contains(FPR[i]))                              //  chceme iba unikatne x
+            //            if (TPR[i - 1] <= TPR[i] && FPR[i - 1] < FPR[i])                        //  chceme iba rastuce y
+            //                result.Add(FPR[i], TPR[i]);
+            //    }
+            //    else
+            //        result.Add(FPR[i], TPR[i]);
+            //}
+
             for (var i = 0; i < thresholds.Count; i++)
-                result.Add(FPR[i], TPR[i]);
+            {
+                if (i > 0)
+                {
+                    if (oldX < FPR[i] && oldY <= TPR[i] && TPR[i] >= FPR[i])
+                    {
+                        result.Add(FPR[i], TPR[i]);
+                        oldX = FPR[i];
+                        oldY = TPR[i];
+                    }
+                }
+                else
+                {
+                    result.Add(FPR[i], TPR[i]);
+                    oldX = FPR[i];
+                    oldY = TPR[i];
+                }
+            }
 
             return result;
         }
