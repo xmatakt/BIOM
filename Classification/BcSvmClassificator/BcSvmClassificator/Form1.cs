@@ -21,15 +21,13 @@ namespace BcSvmClassificator
         private DataStorage dataStorage;
         private DataStorage trainingSet;
         private List<Error> svmClassificatorErrors;
-        private List<NumericUpDown> numUpDowns;
-        private List<Label> labels;
-        private int yOffset = 25;
+        private List<Error> bayesClassificatorErrors;
+        private SVMClassificator svmClassificator;
 
         public Form1()
         {
             svmClassificatorErrors = new List<Error>();
-            numUpDowns = new List<NumericUpDown>();
-            labels = new List<Label>();
+            bayesClassificatorErrors = new List<Error>();
             InitializeComponent();
 
             calPrecision.Enabled = false;
@@ -45,19 +43,6 @@ namespace BcSvmClassificator
                 calPrecision.Enabled = true;
                 dataLabel.Text = openFileDialog.SafeFileName;
             }
-        }
-
-        private Dictionary<int, int> GetCounts()
-        {
-            var result = new Dictionary<int, int>();
-
-            foreach (var label in dataStorage.Items.Select(x => x.Label).Distinct())
-            {
-                var numUpDown = numUpDowns.Find(x => x.Name == label.ToString());
-                result.Add(label, (int)numUpDown.Value);
-            }
-
-            return result;
         }
 
         /// <summary>
@@ -78,7 +63,7 @@ namespace BcSvmClassificator
             return result;
         }
 
-        private void GenerateDataSets(Dictionary<int, int> counts)
+        private void GenerateDataSet(Dictionary<int, int> counts)
         {
 
             trainingSet = new DataStorage();
@@ -122,21 +107,6 @@ namespace BcSvmClassificator
             zedGraphControl.Refresh();
         }
 
-        private void svmButton_Click(object sender, EventArgs e)
-        {
-            var countsDictionary = GetCounts();
-            var trainData = dataStorage.GetTrainigDatamatrix(countsDictionary);
-            var trainClasses = dataStorage.GetLabelsMatrix();
-
-            var svmClassificator = new SVMClassificator(trainData, trainClasses);
-            svmClassificator.TrainClassificator(10);
-
-            foreach (var dataItem in dataStorage.Items)
-            {
-                svmClassificator.Predict(dataItem);
-            }
-        }
-
         private void rbfToolStripMenuItem_Click(object sender, EventArgs e)
         {
             rbfToolStripMenuItem.Checked = !rbfToolStripMenuItem.Checked;
@@ -158,21 +128,42 @@ namespace BcSvmClassificator
         {
             progressBar.Maximum = 100;
             svmClassificatorErrors.Clear();
+            bayesClassificatorErrors.Clear();
             for (var percentage = 10; percentage <= 100; percentage += 5)
             {
                 var countsDictionary = GetCounts(percentage * 0.01);
-                GenerateDataSets(countsDictionary);
-                var svmClassificator = new SVMClassificator();
-                svmClassificatorErrors.Add(svmClassificator.ValidateClassificator(trainingSet, 10, 10,
-                    trackBar.Value * 0.001, rbfToolStripMenuItem.Checked));
+                GenerateDataSet(countsDictionary);
+                svmClassificator = new SVMClassificator();
+
+                CrossValidateClassificators(trainingSet, 10);
                 progressBar.Value = percentage;
             }
 
             GenerateGraph();
         }
 
-        private void CrossValidateClassificators()
+        /// <summary>
+        /// Metoda vygeneruje z dat data trenovaciu a testovaciu mnozinu (v pomere 2/3)
+        /// Z kazdej triedy bude 66% prvkov v trenovacej a zvysne v testovacej mnozine
+        /// Toto sa udeje xValCount krat
+        /// </summary>
+        /// <param name="data">Vstupne data</param>
+        /// <param name="xValCount">Stupen crossvalidacie</param>
+        /// <returns></returns>
+        private void CrossValidateClassificators(DataStorage data, int xValCount)
         {
+            var svmError = new Error()
+            {
+                ClassificationError = 0d,
+                TrainDataCount = 0
+            };
+
+            var bayesError = new Error()
+            {
+                ClassificationError = 0d,
+                TrainDataCount = 0
+            };
+
             for (var x = 0; x < xValCount; x++)
             {
                 //  66% povodnych dat bude tvorit trenovacie data, zvysok testovacie
@@ -183,7 +174,7 @@ namespace BcSvmClassificator
                 foreach (var label in data.Items.Select(l => l.Label).Distinct())
                 {
                     var dataWithSameLabel = data.Items.Where(l => l.Label == label).ToList();
-                    var indexes = GenerateRandomIndexes((int)(dataWithSameLabel.Count * 0.66), dataWithSameLabel.Count);
+                    var indexes = GenerateRandomIndexes((int) (dataWithSameLabel.Count * 0.66), dataWithSameLabel.Count);
                     for (var i = 0; i < dataWithSameLabel.Count; i++)
                     {
 
@@ -193,6 +184,36 @@ namespace BcSvmClassificator
                             testSet.Items.Add(dataWithSameLabel[i]);
                     }
                 }
+
+                svmClassificator.ValidateClassificator(trainSet, testSet, svmError, 10,
+                    trackBar.Value * 0.001, rbfToolStripMenuItem.Checked);
+            }
+            svmError.ClassificationError /= xValCount;
+            bayesError.ClassificationError /= xValCount;
+
+            svmClassificatorErrors.Add(svmError);
+            bayesClassificatorErrors.Add(bayesError);
+        }
+
+        /// <summary>
+        /// Vrati pole nahodne vygenerovanych indexov dlzky retArrLength
+        /// </summary>
+        /// <param name="retArrLength">Dlzka vrateneho pola indexov (nemoze byt vacsie ako maxIndexCount)</param>
+        /// <param name="maxIndexCount">Maximalny index</param>
+        /// <returns></returns>
+        private int[] GenerateRandomIndexes(int retArrLength, int maxIndexCount)
+        {
+            var result = new List<int>();
+            var rand = new Random();
+
+            while (result.Count != retArrLength)
+            {
+                var randIndex = rand.Next(0, maxIndexCount);
+                if (!result.Contains(randIndex))
+                    result.Add(randIndex);
+            }
+
+            return result.ToArray();
         }
     }
 }
