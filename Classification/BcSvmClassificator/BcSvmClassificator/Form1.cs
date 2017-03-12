@@ -32,69 +32,20 @@ namespace BcSvmClassificator
             labels = new List<Label>();
             InitializeComponent();
 
-            programToolStripMenuItem.Enabled = false;
+            calPrecision.Enabled = false;
+            trackBar.Value = 10;
         }
 
         private void loadDataToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                //RemoveControls();
-
-                programToolStripMenuItem.Enabled = false;
+                calPrecision.Enabled = false;
                 dataStorage = new DataStorage(openFileDialog.FileName);
-                programToolStripMenuItem.Enabled = true;
+                calPrecision.Enabled = true;
                 dataLabel.Text = openFileDialog.SafeFileName;
-                //AddControls();
             }
         }
-
-        //private void AddControls()
-        //{
-        //    var tmp = dataStorage.Items.Select(x => x.Label).Distinct().ToArray();
-        //    var counter = 0;
-
-        //    foreach (var label in dataStorage.Items.Select(x => x.Label).Distinct())
-        //    {
-        //        var count = dataStorage.Items.Count(x => x.Label == label);
-
-        //        var numUpDown = new NumericUpDown
-        //        {
-        //            Size = numericUpDownTemplate.Size,
-        //            Location =
-        //                new Point(numericUpDownTemplate.Location.X, numericUpDownTemplate.Location.Y + counter * yOffset),
-        //            Name = label.ToString(),
-        //            Minimum = 2,
-        //            Maximum = count,
-        //            Increment = 1,
-        //            Visible = true,
-        //            Value = count,
-        //            TextAlign = HorizontalAlignment.Right
-        //        };
-        //        Controls.Add(numUpDown);
-        //        numUpDowns.Add(numUpDown);
-
-        //        var lab = new Label
-        //        {
-        //            AutoSize = true,
-        //            Location = new Point(labelTemplate.Location.X, labelTemplate.Location.Y + counter * yOffset),
-        //            Name = "label" + counter,
-        //            Text = "Class " + label + ":"
-        //        };
-        //        Controls.Add(lab);
-        //        labels.Add(lab);
-        //        counter++;
-        //    }
-        //}
-
-        //private void RemoveControls()
-        //{
-        //    for (var i = 0; i < numUpDowns.Count; i++)
-        //    {
-        //        Controls.Remove(numUpDowns[i]);
-        //        Controls.Remove(labels[i]);
-        //    }
-        //}
 
         private Dictionary<int, int> GetCounts()
         {
@@ -186,20 +137,62 @@ namespace BcSvmClassificator
             }
         }
 
-        private void calculatePrecisionToolStripMenuItem_Click(object sender, EventArgs e)
+        private void rbfToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            rbfToolStripMenuItem.Checked = !rbfToolStripMenuItem.Checked;
+            chi2ToolStripMenuItem.Checked = !rbfToolStripMenuItem.Checked;
+        }
+
+        private void chi2ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            chi2ToolStripMenuItem.Checked = !chi2ToolStripMenuItem.Checked;
+            rbfToolStripMenuItem.Checked = !chi2ToolStripMenuItem.Checked;
+        }
+
+        private void trackBar_ValueChanged(object sender, EventArgs e)
+        {
+            trackLabel.Text = (0.001 * trackBar.Value).ToString("0.000");
+        }
+
+        private void calPrecision_Click(object sender, EventArgs e)
         {
             progressBar.Maximum = 100;
             svmClassificatorErrors.Clear();
-            for (var percentage = 10; percentage <= 100; percentage+=5)
+            for (var percentage = 10; percentage <= 100; percentage += 5)
             {
                 var countsDictionary = GetCounts(percentage * 0.01);
                 GenerateDataSets(countsDictionary);
                 var svmClassificator = new SVMClassificator();
-                svmClassificatorErrors.Add(svmClassificator.CrossValidateClassificator(trainingSet, 10, 10));
+                svmClassificatorErrors.Add(svmClassificator.ValidateClassificator(trainingSet, 10, 10,
+                    trackBar.Value * 0.001, rbfToolStripMenuItem.Checked));
                 progressBar.Value = percentage;
             }
 
             GenerateGraph();
+        }
+
+        private void CrossValidateClassificators()
+        {
+            for (var x = 0; x < xValCount; x++)
+            {
+                //  66% povodnych dat bude tvorit trenovacie data, zvysok testovacie
+                //var indexes = GenerateRandomIndexes((int)(data.Items.Count * 0.66), data.Items.Count);
+                var trainSet = new DataStorage();
+                var testSet = new DataStorage();
+
+                foreach (var label in data.Items.Select(l => l.Label).Distinct())
+                {
+                    var dataWithSameLabel = data.Items.Where(l => l.Label == label).ToList();
+                    var indexes = GenerateRandomIndexes((int)(dataWithSameLabel.Count * 0.66), dataWithSameLabel.Count);
+                    for (var i = 0; i < dataWithSameLabel.Count; i++)
+                    {
+
+                        if (indexes.Contains(i))
+                            trainSet.Items.Add(dataWithSameLabel[i]);
+                        else
+                            testSet.Items.Add(dataWithSameLabel[i]);
+                    }
+                }
         }
     }
 }

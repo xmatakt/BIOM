@@ -43,7 +43,7 @@ namespace BcSvmClassificator.Classes
         /// <param name="xValCount">Stupen crossvalidacie (pocet podmnozin vstupnej mnoziny)</param>
         /// <param name="kFold">Stupen crossvalidacie pre natrenovanie EmguCV SVM modelu</param>
         /// <returns>Chyba klasifikatora</returns>  
-        public Error CrossValidateClassificator(DataStorage data, int xValCount, int kFold)
+        public Error ValidateClassificator(DataStorage data, int xValCount, int kFold, double gamma, bool isRbfKernel)
         {
             var result = new Error()
             {
@@ -68,34 +68,9 @@ namespace BcSvmClassificator.Classes
                         if (indexes.Contains(i))
                             trainSet.Items.Add(dataWithSameLabel[i]);
                         else
-                        {
                             testSet.Items.Add(dataWithSameLabel[i]);
-                        }
-                        //if (i < indexes.Length)
-                        //    trainSet.Items.Add(data.Items[i]);
-                        //else
-                        //{
-                        //    testSet.Items.Add(data.Items[i]);
-                        //}
                     }
                 }
-
-                //for (var i = 0; i < data.Items.Count; i++)
-                //{
-
-                //    //if (indexes.Contains(i))
-                //    //    trainSet.Items.Add(data.Items[i]);
-                //    //else
-                //    //{
-                //    //    testSet.Items.Add(data.Items[i]);
-                //    //}
-                //    //if (i < indexes.Length)
-                //    //    trainSet.Items.Add(data.Items[i]);
-                //    //else
-                //    //{
-                //    //    testSet.Items.Add(data.Items[i]);
-                //    //}
-                //}
 
                 //  natrenovanie modelu
                 model = new SVM();
@@ -106,14 +81,8 @@ namespace BcSvmClassificator.Classes
                 //  http://www.emgu.com/wiki/files/3.0.0/document/html/87eaf2bf-4bb4-74b6-b750-2eaeeb5f3b6c.htm
                 try
                 {
-                    //model.Type = SVM.SvmType.;
-                    //model.TermCriteria = new MCvTermCriteria(10, 1e-10);
-                    //model.Gamma = 0.01;
-                    //model.Coef0 = 1;
-                    //model.Degree = 10;
-                    model.SetKernel(SVM.SvmKernelType.Rbf);
-                    //model.C = 0.00000005;
-                    //model.KernelType = SVM.SvmKernelType.Linear;
+                    model.Gamma = gamma;
+                    model.SetKernel(isRbfKernel ? SVM.SvmKernelType.Rbf : SVM.SvmKernelType.Chi2);
 
                     //isTrained = model.TrainAuto(trainingData, kFold);
                     isTrained = model.Train(trainDataMatrix, DataLayoutType.RowSample, trainClasses);
