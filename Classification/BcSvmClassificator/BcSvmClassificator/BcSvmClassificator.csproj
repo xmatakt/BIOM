@@ -70,6 +70,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\DataStorage.cs" />
+    <Compile Include="Classes\DataStorageItem.cs" />
+    <Compile Include="Classes\Error.cs" />
+    <Compile Include="Classes\SVMClassificator.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -90,6 +94,8 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="Data\glass.dat" />
+    <None Include="Data\vehicle.dat" />
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
