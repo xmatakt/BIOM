@@ -154,3 +154,5 @@ $RECYCLE.BIN/
 
 # Mac desktop service store files
 .DS_Store
+/HodnotenieBiomSystemov_1v2/BimSystRating/packages
+/Classification/BcSvmClassificator/packages
