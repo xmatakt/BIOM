@@ -45,6 +45,8 @@
             this.trackLabel = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.calPrecision = new System.Windows.Forms.Button();
+            this.svmCheckBox = new System.Windows.Forms.CheckBox();
+            this.bayesCheckBox = new System.Windows.Forms.CheckBox();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar)).BeginInit();
             this.SuspendLayout();
@@ -180,19 +182,45 @@
             // 
             // calPrecision
             // 
-            this.calPrecision.Location = new System.Drawing.Point(667, 134);
+            this.calPrecision.Location = new System.Drawing.Point(667, 189);
             this.calPrecision.Name = "calPrecision";
-            this.calPrecision.Size = new System.Drawing.Size(173, 27);
+            this.calPrecision.Size = new System.Drawing.Size(173, 32);
             this.calPrecision.TabIndex = 11;
             this.calPrecision.Text = "Calculate precision";
             this.calPrecision.UseVisualStyleBackColor = true;
             this.calPrecision.Click += new System.EventHandler(this.calPrecision_Click);
+            // 
+            // svmCheckBox
+            // 
+            this.svmCheckBox.AutoSize = true;
+            this.svmCheckBox.Checked = true;
+            this.svmCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.svmCheckBox.Location = new System.Drawing.Point(667, 135);
+            this.svmCheckBox.Name = "svmCheckBox";
+            this.svmCheckBox.Size = new System.Drawing.Size(59, 21);
+            this.svmCheckBox.TabIndex = 12;
+            this.svmCheckBox.Text = "SVM";
+            this.svmCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // bayesCheckBox
+            // 
+            this.bayesCheckBox.AutoSize = true;
+            this.bayesCheckBox.Checked = true;
+            this.bayesCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.bayesCheckBox.Location = new System.Drawing.Point(667, 162);
+            this.bayesCheckBox.Name = "bayesCheckBox";
+            this.bayesCheckBox.Size = new System.Drawing.Size(108, 21);
+            this.bayesCheckBox.TabIndex = 13;
+            this.bayesCheckBox.Text = "Naive bayes";
+            this.bayesCheckBox.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(862, 619);
+            this.Controls.Add(this.bayesCheckBox);
+            this.Controls.Add(this.svmCheckBox);
             this.Controls.Add(this.calPrecision);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.trackLabel);
@@ -231,6 +259,8 @@
         private System.Windows.Forms.Label trackLabel;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button calPrecision;
+        private System.Windows.Forms.CheckBox svmCheckBox;
+        private System.Windows.Forms.CheckBox bayesCheckBox;
     }
 }
 

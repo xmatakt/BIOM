@@ -23,6 +23,7 @@ namespace BcSvmClassificator
         private List<Error> svmClassificatorErrors;
         private List<Error> bayesClassificatorErrors;
         private SVMClassificator svmClassificator;
+        private BayesNaiveClassificator bayesClassificator;
 
         public Form1()
         {
@@ -86,11 +87,18 @@ namespace BcSvmClassificator
         private void GenerateGraph()
         {
             var svm = new PointPairList();
+            var bayes = new PointPairList();
 
             foreach (var error in svmClassificatorErrors)
             {
                 if (error.TrainDataCount != 0)
                     svm.Add(new PointPair(error.TrainDataCount, error.ClassificationError));
+            }
+
+            foreach (var error in bayesClassificatorErrors)
+            {
+                //if (error.TrainDataCount != 0)
+                bayes.Add(new PointPair(error.TrainDataCount, error.ClassificationError));
             }
 
             var pane = zedGraphControl.GraphPane;
@@ -101,7 +109,7 @@ namespace BcSvmClassificator
             pane.YAxis.Title.Text = "classification error";
 
             pane.AddCurve("SVM", svm, Color.Red, SymbolType.Diamond);
-            //pane.AddCurve("FNMR", fnmr, Color.Blue, SymbolType.Circle);
+            pane.AddCurve("Bayes", bayes, Color.Blue, SymbolType.Circle);
 
             zedGraphControl.AxisChange();
             zedGraphControl.Refresh();
@@ -134,6 +142,7 @@ namespace BcSvmClassificator
                 var countsDictionary = GetCounts(percentage * 0.01);
                 GenerateDataSet(countsDictionary);
                 svmClassificator = new SVMClassificator();
+                bayesClassificator = new BayesNaiveClassificator();
 
                 CrossValidateClassificators(trainingSet, 10);
                 progressBar.Value = percentage;
@@ -166,8 +175,6 @@ namespace BcSvmClassificator
 
             for (var x = 0; x < xValCount; x++)
             {
-                //  66% povodnych dat bude tvorit trenovacie data, zvysok testovacie
-                //var indexes = GenerateRandomIndexes((int)(data.Items.Count * 0.66), data.Items.Count);
                 var trainSet = new DataStorage();
                 var testSet = new DataStorage();
 
@@ -185,8 +192,12 @@ namespace BcSvmClassificator
                     }
                 }
 
-                svmClassificator.ValidateClassificator(trainSet, testSet, svmError, 10,
-                    trackBar.Value * 0.001, rbfToolStripMenuItem.Checked);
+                if (svmCheckBox.Checked)
+                    svmClassificator.ValidateClassificator(trainSet, testSet, svmError, 10,
+                        trackBar.Value * 0.001, rbfToolStripMenuItem.Checked);
+
+                if (bayesCheckBox.Checked)
+                    bayesClassificator.ValidateClassificator(trainSet, testSet, bayesError);
             }
             svmError.ClassificationError /= xValCount;
             bayesError.ClassificationError /= xValCount;
