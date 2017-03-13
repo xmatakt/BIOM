@@ -31,6 +31,7 @@ namespace BcSvmClassificator
             bayesClassificatorErrors = new List<Error>();
             InitializeComponent();
 
+            openFileDialog.Filter = "DAT Files (*.dat)|*.dat|All Files (*.*)|*.*";
             calPrecision.Enabled = false;
             trackBar.Value = 10;
         }
@@ -64,9 +65,14 @@ namespace BcSvmClassificator
             return result;
         }
 
+        /// <summary>
+        /// Metoda naplni globalny list trainingSet podla udajov zo slovnika count:
+        /// key -> trieda
+        /// value -> pocet prvkov z danej triedy
+        /// </summary>
+        /// <param name="counts">slovnik udavajuci pocty prvkov z danych tried</param>
         private void GenerateDataSet(Dictionary<int, int> counts)
         {
-
             trainingSet = new DataStorage();
 
             var row = 0;
@@ -172,7 +178,7 @@ namespace BcSvmClassificator
                 ClassificationError = 0d,
                 TrainDataCount = 0
             };
-
+             
             for (var x = 0; x < xValCount; x++)
             {
                 var trainSet = new DataStorage();
