@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Emgu.CV;
 using OpenTK.Graphics.OpenGL;
+using System.Threading;
 
 namespace BcSvmClassificator.Classes
 {
@@ -89,6 +90,7 @@ namespace BcSvmClassificator.Classes
 
             foreach (var line in lines)
             {
+                Thread.CurrentThread.CurrentCulture  = System.Globalization.CultureInfo.InvariantCulture;
                 var lineData = line.Split(' ');
                 var dataVector = Array.ConvertAll(SubArray(lineData, 0, lineData.Length - 1), float.Parse);
                 var dataLabel = int.Parse(lineData[lineData.Length - 1]);
