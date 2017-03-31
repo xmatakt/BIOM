@@ -156,3 +156,4 @@ $RECYCLE.BIN/
 .DS_Store
 /HodnotenieBiomSystemov_1v2/BimSystRating/packages
 /Classification/BcSvmClassificator/packages
+/IrisClassification/IrisClassification/packages
