@@ -33,6 +33,7 @@ namespace BcSvmClassificator
 
             openFileDialog.Filter = "DAT Files (*.dat)|*.dat|All Files (*.*)|*.*";
             calPrecision.Enabled = false;
+
             trackBar.Value = 10;
         }
 
