@@ -157,3 +157,7 @@ $RECYCLE.BIN/
 /HodnotenieBiomSystemov_1v2/BimSystRating/packages
 /Classification/BcSvmClassificator/packages
 /IrisClassification/IrisClassification/packages
+/FaceClassification/FaceClassification/packages/EmguCV.3.1.0.1
+/FaceClassification/FaceClassification/packages/OpenTK.1.1.2225.0
+/FaceClassification/FaceClassification/packages/ZedGraph.5.1.5
+/FaceClassification/FaceClassification/packages/OpenTK.GLControl.1.1.2225.0
