@@ -34,21 +34,20 @@
             this.chooseFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pCAToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pcaComputeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.classificationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.sVMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.euclideanToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mahalanobisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.crossvalidationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.sVMCrossvalidation = new System.Windows.Forms.ToolStripMenuItem();
+            this.euclideanCrossValidation = new System.Windows.Forms.ToolStripMenuItem();
+            this.mahalanobisCrossvalidation = new System.Windows.Forms.ToolStripMenuItem();
+            this.allCrossvalidation = new System.Windows.Forms.ToolStripMenuItem();
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.selectedFolderLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.classificationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.sVMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.crossvalidationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.sVMCrossvalidation = new System.Windows.Forms.ToolStripMenuItem();
             this.zedGraphControl_partial = new ZedGraph.ZedGraphControl();
             this.zedGraphControl_total = new ZedGraph.ZedGraphControl();
-            this.euclideanToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.euclideanCrossValidation = new System.Windows.Forms.ToolStripMenuItem();
-            this.allCrossvalidation = new System.Windows.Forms.ToolStripMenuItem();
-            this.mahalanobisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.mahalanobisCrossvalidation = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -60,8 +59,7 @@
             this.fileToolStripMenuItem,
             this.pCAToolStripMenuItem,
             this.classificationToolStripMenuItem,
-            this.crossvalidationToolStripMenuItem,
-            this.saToolStripMenuItem});
+            this.crossvalidationToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
             this.menuStrip.Size = new System.Drawing.Size(1202, 28);
@@ -79,7 +77,7 @@
             // chooseFolderToolStripMenuItem
             // 
             this.chooseFolderToolStripMenuItem.Name = "chooseFolderToolStripMenuItem";
-            this.chooseFolderToolStripMenuItem.Size = new System.Drawing.Size(177, 26);
+            this.chooseFolderToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
             this.chooseFolderToolStripMenuItem.Text = "Choose folder";
             this.chooseFolderToolStripMenuItem.Click += new System.EventHandler(this.chooseFolderToolStripMenuItem_Click);
             // 
@@ -94,10 +92,80 @@
             // pcaComputeToolStripMenuItem
             // 
             this.pcaComputeToolStripMenuItem.Name = "pcaComputeToolStripMenuItem";
-            this.pcaComputeToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.pcaComputeToolStripMenuItem.Size = new System.Drawing.Size(127, 26);
             this.pcaComputeToolStripMenuItem.Text = "Create";
             this.pcaComputeToolStripMenuItem.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.pcaComputeToolStripMenuItem.Click += new System.EventHandler(this.pcaComputeToolStripMenuItem_Click);
+            // 
+            // classificationToolStripMenuItem
+            // 
+            this.classificationToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.sVMToolStripMenuItem,
+            this.euclideanToolStripMenuItem,
+            this.mahalanobisToolStripMenuItem});
+            this.classificationToolStripMenuItem.Name = "classificationToolStripMenuItem";
+            this.classificationToolStripMenuItem.Size = new System.Drawing.Size(108, 24);
+            this.classificationToolStripMenuItem.Text = "Classification";
+            // 
+            // sVMToolStripMenuItem
+            // 
+            this.sVMToolStripMenuItem.Name = "sVMToolStripMenuItem";
+            this.sVMToolStripMenuItem.Size = new System.Drawing.Size(169, 26);
+            this.sVMToolStripMenuItem.Text = "SVM";
+            this.sVMToolStripMenuItem.Click += new System.EventHandler(this.sVMToolStripMenuItem_Click);
+            // 
+            // euclideanToolStripMenuItem
+            // 
+            this.euclideanToolStripMenuItem.Name = "euclideanToolStripMenuItem";
+            this.euclideanToolStripMenuItem.Size = new System.Drawing.Size(169, 26);
+            this.euclideanToolStripMenuItem.Text = "Euclidean";
+            this.euclideanToolStripMenuItem.Click += new System.EventHandler(this.euclideanToolStripMenuItem_Click);
+            // 
+            // mahalanobisToolStripMenuItem
+            // 
+            this.mahalanobisToolStripMenuItem.Name = "mahalanobisToolStripMenuItem";
+            this.mahalanobisToolStripMenuItem.Size = new System.Drawing.Size(169, 26);
+            this.mahalanobisToolStripMenuItem.Text = "Mahalanobis";
+            this.mahalanobisToolStripMenuItem.Click += new System.EventHandler(this.mahalanobisToolStripMenuItem_Click);
+            // 
+            // crossvalidationToolStripMenuItem
+            // 
+            this.crossvalidationToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.sVMCrossvalidation,
+            this.euclideanCrossValidation,
+            this.mahalanobisCrossvalidation,
+            this.allCrossvalidation});
+            this.crossvalidationToolStripMenuItem.Name = "crossvalidationToolStripMenuItem";
+            this.crossvalidationToolStripMenuItem.Size = new System.Drawing.Size(122, 24);
+            this.crossvalidationToolStripMenuItem.Text = "Crossvalidation";
+            // 
+            // sVMCrossvalidation
+            // 
+            this.sVMCrossvalidation.Name = "sVMCrossvalidation";
+            this.sVMCrossvalidation.Size = new System.Drawing.Size(169, 26);
+            this.sVMCrossvalidation.Text = "SVM";
+            this.sVMCrossvalidation.Click += new System.EventHandler(this.sVMCrossvalidation_Click);
+            // 
+            // euclideanCrossValidation
+            // 
+            this.euclideanCrossValidation.Name = "euclideanCrossValidation";
+            this.euclideanCrossValidation.Size = new System.Drawing.Size(169, 26);
+            this.euclideanCrossValidation.Text = "Euclidean";
+            this.euclideanCrossValidation.Click += new System.EventHandler(this.euclideanCrossValidation_Click);
+            // 
+            // mahalanobisCrossvalidation
+            // 
+            this.mahalanobisCrossvalidation.Name = "mahalanobisCrossvalidation";
+            this.mahalanobisCrossvalidation.Size = new System.Drawing.Size(169, 26);
+            this.mahalanobisCrossvalidation.Text = "Mahalanobis";
+            this.mahalanobisCrossvalidation.Click += new System.EventHandler(this.mahalanobisCrossvalidation_Click);
+            // 
+            // allCrossvalidation
+            // 
+            this.allCrossvalidation.Name = "allCrossvalidation";
+            this.allCrossvalidation.Size = new System.Drawing.Size(169, 26);
+            this.allCrossvalidation.Text = "All";
+            this.allCrossvalidation.Click += new System.EventHandler(this.allCrossvalidation_Click);
             // 
             // statusStrip1
             // 
@@ -114,41 +182,6 @@
             // 
             this.selectedFolderLabel.Name = "selectedFolderLabel";
             this.selectedFolderLabel.Size = new System.Drawing.Size(0, 17);
-            // 
-            // classificationToolStripMenuItem
-            // 
-            this.classificationToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.sVMToolStripMenuItem,
-            this.euclideanToolStripMenuItem,
-            this.mahalanobisToolStripMenuItem});
-            this.classificationToolStripMenuItem.Name = "classificationToolStripMenuItem";
-            this.classificationToolStripMenuItem.Size = new System.Drawing.Size(108, 24);
-            this.classificationToolStripMenuItem.Text = "Classification";
-            // 
-            // sVMToolStripMenuItem
-            // 
-            this.sVMToolStripMenuItem.Name = "sVMToolStripMenuItem";
-            this.sVMToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
-            this.sVMToolStripMenuItem.Text = "SVM";
-            this.sVMToolStripMenuItem.Click += new System.EventHandler(this.sVMToolStripMenuItem_Click);
-            // 
-            // crossvalidationToolStripMenuItem
-            // 
-            this.crossvalidationToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.sVMCrossvalidation,
-            this.euclideanCrossValidation,
-            this.mahalanobisCrossvalidation,
-            this.allCrossvalidation});
-            this.crossvalidationToolStripMenuItem.Name = "crossvalidationToolStripMenuItem";
-            this.crossvalidationToolStripMenuItem.Size = new System.Drawing.Size(122, 24);
-            this.crossvalidationToolStripMenuItem.Text = "Crossvalidation";
-            // 
-            // sVMCrossvalidation
-            // 
-            this.sVMCrossvalidation.Name = "sVMCrossvalidation";
-            this.sVMCrossvalidation.Size = new System.Drawing.Size(181, 26);
-            this.sVMCrossvalidation.Text = "SVM";
-            this.sVMCrossvalidation.Click += new System.EventHandler(this.sVMCrossvalidation_Click);
             // 
             // zedGraphControl_partial
             // 
@@ -179,48 +212,6 @@
             this.zedGraphControl_total.ScrollMinY2 = 0D;
             this.zedGraphControl_total.Size = new System.Drawing.Size(561, 561);
             this.zedGraphControl_total.TabIndex = 3;
-            // 
-            // euclideanToolStripMenuItem
-            // 
-            this.euclideanToolStripMenuItem.Name = "euclideanToolStripMenuItem";
-            this.euclideanToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
-            this.euclideanToolStripMenuItem.Text = "Euclidean";
-            this.euclideanToolStripMenuItem.Click += new System.EventHandler(this.euclideanToolStripMenuItem_Click);
-            // 
-            // euclideanCrossValidation
-            // 
-            this.euclideanCrossValidation.Name = "euclideanCrossValidation";
-            this.euclideanCrossValidation.Size = new System.Drawing.Size(181, 26);
-            this.euclideanCrossValidation.Text = "Euclidean";
-            this.euclideanCrossValidation.Click += new System.EventHandler(this.euclideanCrossValidation_Click);
-            // 
-            // allCrossvalidation
-            // 
-            this.allCrossvalidation.Name = "allCrossvalidation";
-            this.allCrossvalidation.Size = new System.Drawing.Size(181, 26);
-            this.allCrossvalidation.Text = "All";
-            this.allCrossvalidation.Click += new System.EventHandler(this.allCrossvalidation_Click);
-            // 
-            // mahalanobisToolStripMenuItem
-            // 
-            this.mahalanobisToolStripMenuItem.Name = "mahalanobisToolStripMenuItem";
-            this.mahalanobisToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
-            this.mahalanobisToolStripMenuItem.Text = "Mahalanobis";
-            this.mahalanobisToolStripMenuItem.Click += new System.EventHandler(this.mahalanobisToolStripMenuItem_Click);
-            // 
-            // saToolStripMenuItem
-            // 
-            this.saToolStripMenuItem.Name = "saToolStripMenuItem";
-            this.saToolStripMenuItem.Size = new System.Drawing.Size(35, 24);
-            this.saToolStripMenuItem.Text = "sa";
-            this.saToolStripMenuItem.Click += new System.EventHandler(this.saToolStripMenuItem_Click);
-            // 
-            // mahalanobisCrossvalidation
-            // 
-            this.mahalanobisCrossvalidation.Name = "mahalanobisCrossvalidation";
-            this.mahalanobisCrossvalidation.Size = new System.Drawing.Size(181, 26);
-            this.mahalanobisCrossvalidation.Text = "Mahalanobis";
-            this.mahalanobisCrossvalidation.Click += new System.EventHandler(this.mahalanobisCrossvalidation_Click);
             // 
             // Form1
             // 
@@ -263,7 +254,6 @@
         private System.Windows.Forms.ToolStripMenuItem euclideanCrossValidation;
         private System.Windows.Forms.ToolStripMenuItem allCrossvalidation;
         private System.Windows.Forms.ToolStripMenuItem mahalanobisToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem saToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem mahalanobisCrossvalidation;
     }
 }

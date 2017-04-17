@@ -49,7 +49,6 @@ namespace BcSvmClassificator.Classes
             trainDataMatrix = trainSet.ToMatrix();
             trainClasses = trainSet.GetLabelsMatrix();
             //var trainingData = new TrainData(trainDataMatrix, DataLayoutType.RowSample, trainClasses);
-
             //  http://www.emgu.com/wiki/files/3.0.0/document/html/87eaf2bf-4bb4-74b6-b750-2eaeeb5f3b6c.htm
             try
             {

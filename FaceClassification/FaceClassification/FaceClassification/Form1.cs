@@ -26,7 +26,7 @@ namespace FaceClassification
         private EuclideanClassificator euclideanClassificator = null;
         private MahalanobisClassificator mahalanobisClassificator = null;
 
-        private int xvalCount = 2;
+        private int xvalCount = 3;
 
         public Form1()
         {
@@ -544,12 +544,6 @@ namespace FaceClassification
             // axes since the data have changed
             zedGraphControl_partial.AxisChange();
             zedGraphControl_partial.Refresh();
-        }
-
-        private void saToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            var tmp  = new MahalanobisClassificator();
-            tmp.tmp();
         }
     }
 }
