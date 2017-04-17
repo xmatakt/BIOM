@@ -13,7 +13,7 @@ namespace FaceClassification
 {
     public partial class Form1 : Form
     {
-        private const int maxComponents = 1;
+        private const int maxComponents = 20;
         private string selectedFolder = "";
         private bool canContinue;
         private bool canClassify;
@@ -26,7 +26,7 @@ namespace FaceClassification
         private EuclideanClassificator euclideanClassificator = null;
         private MahalanobisClassificator mahalanobisClassificator = null;
 
-        private int xvalCount = 3;
+        private int xvalCount = 10;
 
         public Form1()
         {
@@ -370,7 +370,7 @@ namespace FaceClassification
 
             svmClassificator = new SVMClassificator();
             euclideanClassificator = new EuclideanClassificator();
-            mahalanobisClassificator = new MahalanobisClassificator();
+            //mahalanobisClassificator = new MahalanobisClassificator();
             for (var i = 0; i < xvalCount; i++)
             {
                 GenerateDataSets();
@@ -390,8 +390,8 @@ namespace FaceClassification
                 svmClassificator.TrainClassificator();
                 svmClassificator.TestClassificator(testDataMatrix, testLabels, i);
 
-                mahalanobisClassificator.SetDatasets(trainDataMatrix, trainingLabels);
-                mahalanobisClassificator.TestClassificator(testDataMatrix, testLabels, i);
+                //mahalanobisClassificator.SetDatasets(trainDataMatrix, trainingLabels);
+                //mahalanobisClassificator.TestClassificator(testDataMatrix, testLabels, i);
             }
 
             GenerateGraphs();
