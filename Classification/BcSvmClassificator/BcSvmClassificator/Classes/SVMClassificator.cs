@@ -15,7 +15,6 @@ namespace BcSvmClassificator.Classes
         private Matrix<int> trainClasses;
         private SVM model;
         private bool isTrained;
-        public int tmpCounter = 0; //  TODO: dat doprec
 
         public SVMClassificator()
         {

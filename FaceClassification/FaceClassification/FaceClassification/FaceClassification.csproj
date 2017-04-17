@@ -70,6 +70,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classificators\EuclideanClassificator.cs" />
+    <Compile Include="Classificators\MahalanobisClassificator.cs" />
     <Compile Include="Classificators\SVMClassificator.cs" />
     <Compile Include="DataSet.cs" />
     <Compile Include="Form1.cs">
