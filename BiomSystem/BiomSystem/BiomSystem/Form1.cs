@@ -78,7 +78,8 @@ namespace BiomSystem
             euclidDistanceLabel.Text = "Euclidean distance: " + Math.Round(euclidDistance, 2);
             compResults.Add(euclidDistance);
             compResults.Add(comparingResult.HammingDistance);
-            var result = GetResult();
+            //var result = GetResult();
+            var result = euclidDistance + comparingResult.HammingDistance;
 
             similarityLabel.Text = "Similarity: " + Math.Round(result, 2);
         }
